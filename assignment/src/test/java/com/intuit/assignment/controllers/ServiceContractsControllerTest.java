@@ -19,6 +19,7 @@ import java.util.Optional;
 import static com.intuit.assignment.contants.Status.ACTIVE;
 import static com.intuit.assignment.contants.Status.INACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -94,15 +95,27 @@ class ServiceContractsControllerTest {
     }
 
     @Test
-    void shouldDeleteContract_WhenDeletingContract_GivenContractIdDoesnotExist() {
+    void shouldThrowError_WhenDeletingContract_GivenContractIdDoesnotExist() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         ServiceContract serviceContract = new ServiceContract(1L,1L,1L,ACTIVE.getMessage());
         try {
             serviceContractsController.deleteContract(1L);
+            fail("Should not reach here");
         } catch (Exception ex) {
             assertEquals("Contract with given Id doesn't exist",ex.getMessage());
         }
+    }
+
+    @Test
+    void shouldDeleteContract_WhenDeletingContract_GivenContractIdExist() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        ServiceContract serviceContract = new ServiceContract(1L,1L,1L,ACTIVE.getMessage());
+        when(serviceContractService.getContractById(1L)).thenReturn(Optional.of(serviceContract));
+        doNothing().when(serviceContractService).deleteContract(serviceContract);
+        ResponseEntity<Void> responseEntity = serviceContractsController.deleteContract(1L);
+        assertEquals(204,responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -117,6 +130,29 @@ class ServiceContractsControllerTest {
         when(serviceContractService.getAllContracts()).thenReturn(serviceContractsList);
         ResponseEntity<List<ServiceContract>> responseEntity = serviceContractsController.getAllContracts();
         assertEquals(200,responseEntity.getStatusCode().value());
+    }
+
+    @Test
+    void shouldReturnCorrectResponse_WhenUpdatingStatusOfGivenContract_givenCorrectData() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        ServiceContract serviceContract = new ServiceContract(1L,1L,1L,ACTIVE.getMessage());
+        when(serviceContractService.getContractById(1L)).thenReturn(Optional.of(serviceContract));
+        doNothing().when(serviceContractService).updateServiceContractByStatusAndServiceContractId(ACTIVE.getMessage(),1L);
+        ResponseEntity<String> responseEntity = serviceContractsController.updateContractStatus(1L,Optional.of(ACTIVE.getMessage()));
+        assertEquals(200,responseEntity.getStatusCode().value());
+    }
+
+    @Test
+    void shouldThrowError_WhenUpdatingStatusOfGivenContract_givenInvalidContractId() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        try {
+        serviceContractsController.updateContractStatus(1L,Optional.of(ACTIVE.getMessage()));
+        fail("Should not reach here");
+        } catch (Exception e){
+            assertEquals("Contract with given Id doesn't exist",e.getMessage());
+        }
     }
 
     @Test

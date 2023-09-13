@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,18 @@ public class ServiceContractsController {
     public ResponseEntity<ServiceContract> createServiceContract(@RequestBody ServiceContract serviceContract) {
         ServiceContract newContract = serviceContractService.createContract(serviceContract);
         return new ResponseEntity<>(newContract, HttpStatus.CREATED);
+    }
+
+    @PutMapping ("/{serviceContractId}/setStatus")
+    public ResponseEntity<String> updateContractStatus(@PathVariable("serviceContractId") Long serviceContractId,
+                                                       @RequestParam("status") Optional<String> status) {
+        String updateStatus = status.get();
+        Optional<ServiceContract> serviceContract = serviceContractService.getContractById(serviceContractId);
+        if(serviceContract.isEmpty()){
+            throw new AppException(RESOURCE_NOT_FOUND,"Contract with given Id doesn't exist");
+        }
+        serviceContractService.updateServiceContractByStatusAndServiceContractId(updateStatus,serviceContractId);
+        return new ResponseEntity<>("Status updated successfully", HttpStatus.OK);
     }
 
     @GetMapping("{serviceContractId}")

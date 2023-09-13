@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static com.intuit.assignment.contants.Status.ACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,6 +52,7 @@ class ContractWorkersControllerTest {
         contractWorkerService.createWorker(contractWorker);
         try {
             contractWorkersController.createWorker(contractWorker);
+            fail("Should not reach here");
         } catch (Exception ex){
             assertEquals("Email Id not valid",ex.getMessage());
         }
@@ -110,6 +112,7 @@ class ContractWorkersControllerTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         try {
             contractWorkersController.getWorker(1L, 1L);
+            fail("Should not reach here");
         } catch(Exception ex) {
             assertEquals("Worker with given employee Id doesn't exist",ex.getMessage());
         }
@@ -136,6 +139,7 @@ class ContractWorkersControllerTest {
                 1L,1L,20);
         try {
             contractWorkersController.updateWorker(1L, 1L, contractWorker);
+            fail("Should not reach here");
         } catch(Exception e) {
             assertEquals("Worker with given employee Id and organisation Id combination doesn't exist",e.getMessage());
         }
@@ -150,9 +154,22 @@ class ContractWorkersControllerTest {
                 1L,1L,20);
         try {
             contractWorkersController.deleteWorker(1L,1L);
+            fail("Should not reach here");
         } catch(Exception e) {
             assertEquals("Worker with given employee Id and organisation Id combination doesn't exist",e.getMessage());
         }
+    }
+
+    @Test
+    void shouldDeleteIndividual_WhenDeletingIndividualWorker_givenCorrectIds() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        ContractWorker contractWorker = new ContractWorker("Pranjal","B","30/01/2001",
+                "developer","pranjalpriyadarshi01gmail.com","Active",
+                1L,1L,20);
+        when(contractWorkerService.getWorkerById(1L,1L)).thenReturn(Optional.of(contractWorker));
+        doNothing().when(contractWorkerService).deleteWorker(Optional.of(contractWorker));
+        contractWorkersController.deleteWorker(1L,1L);
     }
 
 }

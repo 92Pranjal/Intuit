@@ -53,6 +53,7 @@ public class ContractServiceMappingsController {
         Long ownerOfGivenServiceContract = serviceContractDetails.getServiceOwner();
         Optional<ContractWorker> contractWorker = contractWorkerService.getWorkerById(employeeId,organisationId);
         Optional<ServiceContract> serviceContract = serviceContractService.getContractById(contractId);
+
         if(contractModifierId.compareTo(ownerOfGivenServiceContract) == 0) {
             if (exitingMapping.isPresent()) {
                 throw new AppException(BAD_REQUEST,"Worker and service contract mapping already exists", List.of());
@@ -88,6 +89,7 @@ public class ContractServiceMappingsController {
         Long ownerOfGivenServiceContract = serviceContractDetails.getServiceOwner();
         Optional<ContractWorker> contractWorker = contractWorkerService.getWorkerById(employeeId,organisationId);
         Optional<ServiceContract> serviceContract = serviceContractService.getContractById(contractId);
+
         if(contractModifierId.compareTo(ownerOfGivenServiceContract) == 0) {
             if (exitingMapping.isEmpty()) {
                 throw new AppException(BAD_REQUEST, "No mapping has been created till now", List.of());
@@ -119,6 +121,7 @@ public class ContractServiceMappingsController {
         Optional<ContractWorker> contractWorker = contractWorkerService.getWorkerById(employeeId,organisationId);
         Optional<ServiceContract> serviceContract = serviceContractService.getContractById(updatingContractId);
         Long ownerOfGivenService = ownerOfGivenServiceContract.getServiceOwner();
+
         if(contractModifierId.compareTo(ownerOfGivenService) == 0) {
             if(contractWorkerMappingList.size() > 0) {
                 if (contractWorker.isPresent() && serviceContract.isPresent())

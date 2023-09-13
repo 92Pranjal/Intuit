@@ -12,6 +12,7 @@ const UpdateContract = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://127.0.0.1:8080/api/mapping/${inputData.existingContract}/revise`, {
+            contractModfier: inputData.contractModfier,
             contractId: inputData.contractId,
             organisationId: inputData.organisationId,
             employeeId: inputData.employeeId

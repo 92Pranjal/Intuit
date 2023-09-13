@@ -12,6 +12,7 @@ const Offboard = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post("http://127.0.0.1:8080/api/mapping/offboard", {
+            contractModfier: inputData.contractModfier,
             contractId: inputData.contractId,
             organisationId: inputData.organisationId,
             employeeId: inputData.employeeId

@@ -2,6 +2,7 @@ package com.intuit.assignment.service;
 
 import com.intuit.assignment.entity.ServiceContract;
 import com.intuit.assignment.repository.ServiceContractRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,12 @@ public class ServiceContractServiceImpl implements ServiceContractService {
     @Override
     public List<ServiceContract> getAllActiveContracts(String status) {
         return serviceContractRepository.findActiveContracts(status);
+    }
+
+    @Transactional
+    @Override
+    public void updateServiceContractByStatusAndServiceContractId(String status, Long serviceContractId) {
+        serviceContractRepository.updateServiceContractByStatusAndServiceContractId(status,serviceContractId);
     }
 
     @Override

@@ -20,5 +20,7 @@ public interface ServiceContractService {
 
     List<ServiceContract> getAllActiveContracts(String status);
 
+    void updateServiceContractByStatusAndServiceContractId(String status, Long serviceContractId);
+
     List<ServiceContract> getAllContracts();
 }

@@ -5,17 +5,12 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,11 +41,11 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
                 errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public final ResponseEntity<ErrorResponse> handleUncaughtException(Exception ex){
-//        ErrorObject errorObject = new ErrorObject(UNHANDLED_EXCEPTION.getMessage(), ex.getClass().getName());
-//        ErrorResponse errorResponse = new ErrorResponse(UNHANDLED_EXCEPTION,UNHANDLED_EXCEPTION.getMessage(), List.of(errorObject));
-//
-//        return new ResponseEntity<>(errorResponse,appResponseHttpStatus.getStatus(UNHANDLED_EXCEPTION));
-//    }
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ErrorResponse> handleUncaughtException(Exception ex){
+        ErrorObject errorObject = new ErrorObject(UNHANDLED_EXCEPTION.getMessage(), ex.getClass().getName());
+        ErrorResponse errorResponse = new ErrorResponse(UNHANDLED_EXCEPTION,UNHANDLED_EXCEPTION.getMessage(), List.of(errorObject));
+
+        return new ResponseEntity<>(errorResponse,appResponseHttpStatus.getStatus(UNHANDLED_EXCEPTION));
+    }
 }
