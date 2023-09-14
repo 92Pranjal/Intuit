@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 const UpdateContract = () => {
-    const data = {contractModfier: "",organisationId: "",contractId: "",employeeId: "", existingContract: ""};
+    const data = {contractModifierId: "",organisationId: "",contractId: "",employeeId: "", existingContract: ""};
     const [inputData , setInputData] = useState(data);
     const [responseData, setResponseData] = useState({});
     const [error,setError] = useState(null);
@@ -12,7 +12,7 @@ const UpdateContract = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.put(`http://127.0.0.1:8080/api/mapping/${inputData.existingContract}/revise`, {
-            contractModfier: inputData.contractModfier,
+            contractModifierId: inputData.contractModifierId,
             contractId: inputData.contractId,
             organisationId: inputData.organisationId,
             employeeId: inputData.employeeId
@@ -36,7 +36,7 @@ const UpdateContract = () => {
                 </div>
                 <div>
                     <label>Contract Modifier Id: </label>
-                    <input type="text" name='contractModfier' value={inputData.contractModfier} onChange={handleData}></input> <br/>
+                    <input type="text" name='contractModifierId' value={inputData.contractModifierId} onChange={handleData}></input> <br/>
                     <label>Existing contract: </label>
                     <input type="text" name='existingContract' value={inputData.existingContract} onChange={handleData}></input> <br/>
                     <label>Organisation Id: </label>

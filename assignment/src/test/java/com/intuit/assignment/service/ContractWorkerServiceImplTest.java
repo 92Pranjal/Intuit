@@ -1,6 +1,7 @@
 package com.intuit.assignment.service;
 
 import com.intuit.assignment.entity.ContractWorker;
+import com.intuit.assignment.entity.ContractWorkerId;
 import com.intuit.assignment.repository.ContractWorkerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +42,7 @@ class ContractWorkerServiceImplTest {
         ContractWorker contractWorker = new ContractWorker("Pranjal","B","30/01/2001",
                 "developer","pranjalpriyadarshi01@gmail.com","Active",
                 1L,1L,25);
-        when(contractWorkerRepository.findByEmployeeNumberAndOrganisationId(1L,1L))
+        when(contractWorkerRepository.findById(new ContractWorkerId(1L,1L)))
                 .thenReturn(Optional.of(contractWorker));
         Optional<ContractWorker> optionalContractWorker = contractWorkerService.getWorkerById(1L,1L);
         assertEquals(25,optionalContractWorker.get().getAllocationPercentage());

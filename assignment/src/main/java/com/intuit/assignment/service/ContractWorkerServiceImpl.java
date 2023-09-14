@@ -1,14 +1,17 @@
 package com.intuit.assignment.service;
 
 import com.intuit.assignment.entity.ContractWorker;
+import com.intuit.assignment.entity.ContractWorkerId;
 import com.intuit.assignment.repository.ContractWorkerRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ContractWorkerServiceImpl implements ContractWorkerService {
 
@@ -26,8 +29,7 @@ public class ContractWorkerServiceImpl implements ContractWorkerService {
 
     @Override
     public Optional<ContractWorker> getWorkerById(Long employeeNumber, Long organisationId) {
-        Optional<ContractWorker> optionalContractWorker = contractWorkerRepository.findByEmployeeNumberAndOrganisationId(employeeNumber,organisationId);
-        return optionalContractWorker;
+        return contractWorkerRepository.findById(new ContractWorkerId(employeeNumber,organisationId));
     }
 
     @Override
@@ -42,8 +44,7 @@ public class ContractWorkerServiceImpl implements ContractWorkerService {
 
     @Override
     public ContractWorker updateWorker(ContractWorker worker) {
-        ContractWorker contractWorker = contractWorkerRepository
-                .findByEmployeeNumberAndOrganisationId(worker.getEmployeeNumber(),worker.getOrganisationId()).get();
+        ContractWorker contractWorker = contractWorkerRepository.findById(new ContractWorkerId(worker.getEmployeeNumber(),worker.getOrganisationId())).get();
         contractWorker.setFirstName(worker.getFirstName());
         contractWorker.setLastName(worker.getLastName());
         contractWorker.setEmail(worker.getEmail());

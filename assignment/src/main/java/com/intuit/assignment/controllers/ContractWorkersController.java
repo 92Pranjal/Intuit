@@ -36,7 +36,10 @@ public class ContractWorkersController {
         if (!emailValidator.isEmail(contractWorker.getEmail())){
             throw new AppException(BAD_REQUEST,"Email Id not valid");
         }
+        log.info(String.valueOf(contractWorker.getAllocationPercentage()));
         ContractWorker newWorker = contractWorkerService.createWorker(contractWorker);
+        log.info(String.valueOf(newWorker.getEmployeeNumber()));
+        log.info(String.valueOf(newWorker.getOrganisationId()));
         return new ResponseEntity<>(newWorker, HttpStatus.CREATED);
     }
 
@@ -48,7 +51,7 @@ public class ContractWorkersController {
 
     @GetMapping("{organisationId}/{employeeNumber}")
     public ResponseEntity<Object> getWorker(@PathVariable("organisationId") Long organisationId,
-                                  @PathVariable("employeeNumber") Long employeeNumber){
+                                            @PathVariable("employeeNumber") Long employeeNumber){
         Optional<ContractWorker> contractWorker = contractWorkerService.getWorkerById(organisationId,employeeNumber);
         if(contractWorker.isEmpty()){
             throw new AppException(RESOURCE_NOT_FOUND,"Worker with given employee Id doesn't exist");

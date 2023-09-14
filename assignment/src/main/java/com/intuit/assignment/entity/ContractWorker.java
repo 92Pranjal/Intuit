@@ -11,16 +11,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name= "ContractWorker")
+@Table(name= "contract_worker")
 @IdClass(ContractWorkerId.class)
 public class ContractWorker {
 
-    @Column(nullable = false)
+
+    @Column(name="first_name", nullable = false)
     private String firstName;
 
+    @Column(name="last_name")
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(name="start_date",nullable = false)
     private String startDate;
 
     @Column(nullable = false)
@@ -37,8 +39,9 @@ public class ContractWorker {
     private Long employeeNumber;
 
     @Id
+    @Column(name="organisation_id")
     private Long organisationId;
 
+    @Column(name="allocation_percentage")
     private Integer allocationPercentage=0;
-
 }

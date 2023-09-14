@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 const Offboard = () => {
-    const data = {contractModfier: "",organisationId: "",contractId: "",employeeId: ""};
+    const data = {contractModifierId: "",organisationId: "",contractId: "",employeeId: ""};
     const [inputData , setInputData] = useState(data);
     const [responseData, setResponseData] = useState(null);
     const [error,setError] = useState(null);
@@ -12,7 +12,7 @@ const Offboard = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post("http://127.0.0.1:8080/api/mapping/offboard", {
-            contractModfier: inputData.contractModfier,
+            contractModifierId: inputData.contractModifierId,
             contractId: inputData.contractId,
             organisationId: inputData.organisationId,
             employeeId: inputData.employeeId
@@ -36,7 +36,7 @@ const Offboard = () => {
                 </div>
                 <div>
                     <label>Contract Modifier Id: </label>
-                    <input type="text" name='contractModfier' value={inputData.contractModfier} onChange={handleData}></input> <br/>
+                    <input type="text" name='contractModifierId' value={inputData.contractModifierId} onChange={handleData}></input> <br/>
                     <label>Organisation Id: </label>
                     <input type="text" name='organisationId' value={inputData.organisationId} onChange={handleData}></input> <br/>
                     <label>Contract Id: </label>
